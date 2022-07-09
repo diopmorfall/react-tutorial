@@ -124,7 +124,8 @@ function App() {
             <section>
                 <h2>Lists and keys</h2>
                 <p>We can transform arrays in lists of elements, and then render it</p>
-                <NumberList numbers={ onis } />
+                <NumberList numbers= { onis } />
+                <KeyNumberList numbers={ digits } />
             </section>
             <hr/>
 		</div>
@@ -310,15 +311,68 @@ class WarningContainer extends React.Component{
 }
 
 function NumberList(props) {
-    const numbers = props.numbers;
+    const numbers = props.numbers;  
     const numbersList = numbers.map(number => 
-        <li><i>{ number.toUpperCase() }</i></li>
+        <li key={ number }>
+            <i>{ number.toUpperCase() }</i>
+        </li>
     )
-
+    //? Like it was previously it'll return an error, because a key is not included when the list is created
+    //* that's why we add the key paramter to the li element, to make them unique (if you have it, use an id field X)
+    //* or like in this case, the index of the cycle
+    //! (but this should be the last resort, they're not reliable if the order of the items changes)
     return(
         <ul>{ numbersList }</ul>
     )
 }
 
-const onis = ["Haccha", "Juki", "Fuga", "Jaki", "Inbi"]; 
+function KeyNumberList(props) {
+    const numbers = props.numbers;  
+    const numbersList = numbers.map(number => 
+        <ListItem key={ number.key } value={ number.value }/>
+    )
+    //? this is already better, since we ue the id of the element X
+    //! I can only get the key from here inside the array Z
+
+    //* Keys inside an array must be unique, but not globally unique in all the code
+    //? React uses keys as hints, but they're not passed in the components
+
+    /*
+    const capitalNumbers = numbers.map(number => 
+        <ListItem key={ number.key } value={ number.value.toUpperCase() }/>
+    )
+
+    return(
+        <div>
+            <ul>{ numbersList }</ul>
+            <ul>{ capitalNumbers }</ul>
+        </div>
+    ) */
+
+    //? since JSX allows to embed every expression in braces, we can also write it like this:
+
+    return(
+        <div>
+            <ul> { numbersList } </ul>
+            <ul>
+                {numbers.map(number => 
+                    <ListItem key={ number.key } value={ number.value.toUpperCase() }/>
+                )}
+            </ul>
+        </div>
+    )
+}
+
+function ListItem(props){
+    //* the key only makes sense in the context of the surrounding array, I can't get it directly here Z
+    return <li>{ props.value }</li>
+}
+
+const onis = ["Haccha", "Juki", "Fuga", "Jaki", "Inbi"];
+const digits = [
+    {value: 'a', key: 1},
+    {value: 'bari', key: 2},
+    {value: 'capitale', key: 3},
+    {value: 'digitale', key: 4}
+];
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
