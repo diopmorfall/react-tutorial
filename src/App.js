@@ -128,6 +128,41 @@ function App() {
                 <KeyNumberList numbers={ digits } />
             </section>
             <hr/>
+            <section>
+                <h2>Forms</h2>
+                <p>
+                    Forms are different, because unlike other components they've got an internal state.
+                    Usually the default behavior is to browse to the next page when we submit it, but we
+                    can control it (for example, by making a proper function that handles the submission)<br />
+                    We can do it by using <code>controlled components</code>
+                </p>
+                <br/>
+                <p>
+                    Some elements (input, select, textarea) update their state based on user input; but usually
+                    the state is updated only by <code>setState()</code><br/>
+                    We can make the React state the "official setter", and then make it handle by the component that
+                    renders the form. This way we're creating a controlled component
+                </p>
+                <NameForm /><br/>
+                <p>
+                    A <code>textarea</code> defines its text by its children, and has a value attribute in its props (making it similar
+                    to the previous form)
+                </p><br/>
+                <p>
+                    The <code>select</code> tag instead creates a dropdown list, and the selected value is the one option with that attribute.
+                    But in React, we still have the value attribute with the name of the selected option
+                </p>
+                <SpeakersForm />
+                <p>
+                    The <code>file</code> input field has a read-only value, that makes it an uncontrolled component
+                </p><br />
+                <p>
+                    If you need to handle multiple controlled input elements, you can give a name to the element and then let the handler
+                    function behave basing on it (event.target.name)
+                </p>
+                <Reservation />
+            </section>
+            <hr/>
 		</div>
 	);
 }
@@ -375,4 +410,134 @@ const digits = [
     {value: 'capitale', key: 3},
     {value: 'digitale', key: 4}
 ];
+
+
+class NameForm extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {value: ""};
+        //? value could have a default value that'll be shown like a placeholder
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event){ //* the method that sets the state at each change in the input field
+        //? modifying its content, the value will be saved in the state AND THEN rendered in the field
+        //* this way also the state is updated and driven only by setState()
+        this.setState({value: event.target.value});
+        alert("State changing at each keystroke");
+    }
+
+    handleSubmit(event){
+        alert("Submitted: " + this.state.value)
+        event.preventDefault();
+    }
+
+    render(){
+        return(
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name:
+                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        )
+    }
+}
+
+class SpeakersForm extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {value: "Jessica"};
+        //? value could have a default value that'll be shown like a placeholder
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event){ //* the method that sets the state at each change in the input field
+        //? modifying its content, the value will be saved in the state AND THEN rendered in the field
+        //* this way the state is updated and driven only by setState()
+        this.setState({value: event.target.value});
+        //alert("State changing when changing option");
+    }
+
+    handleSubmit(event){
+        alert("Submitting: " + this.state.value)
+        event.preventDefault();
+    }
+
+    render(){
+        return(
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Choose a speaker you want to get more details about:
+                    <select value={this.state.value} onChange={this.handleChange}>
+                        <option value="Gherardo">Gherardo</option>
+                        <option value="Aurora">Aurora</option>
+                        <option value="Jessica">Jessica</option>
+                        <option value="Luca">Luca</option>
+                        <option value="Nicolò">Nicolò</option>
+                    </select>
+                </label><br />
+                <input type="file" /><br />
+                <input type="submit" value="Submit" />
+            </form>
+        )
+    }
+}
+
+class Reservation extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isSpeaker: true,
+            minutesOfSpeech: 15
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event){
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value, //* an ES6 computed property, updated dynamically
+            //? isSpeaker: true/false (possible values)
+            //? minutesOfSpeech: any number
+        });
+        //* basing on the name of the input element, we can make this function behave how we want
+    }
+
+    render(){
+        return(
+            <form>
+                <label>
+                    Is a speaker
+                    <input name='isSpeaker' type="checkbox"
+                        checked={this.state.isSpeaker}
+                        onChange={this.handleInputChange}
+                    />
+                </label><br />
+                <label>
+                    Minutes of speech: 
+                    <input name="minutesOfSpeech" type="number"
+                        value={this.state.minutesOfSpeech}
+                        onChange={this.handleInputChange}
+                    />
+                </label>
+            </form>
+        )
+    }
+
+    //* setting the value property in controlled components prevents the user to change it
+    //! but if you let it be editable, you could have set the value to null/undefined
+
+    //* Using controlled components is cool, but you should write an event handler for every way your data can change
+    //? in this cases, uncontrolled ones are an alternative to build forms
+    //* there's also Formik, which is an open source library that handles validation, submissions and visited fields
+}
+
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
