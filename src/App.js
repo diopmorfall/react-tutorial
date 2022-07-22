@@ -182,6 +182,31 @@ function App() {
                 </p>
             </section>
             <hr />
+            <section>
+                <h2>Composition vs Inheritance</h2>
+                <p>
+                    React has a composition model that is recomended instead of using inheritance, in order to make the code more reusable
+                </p>
+                <h4>
+                    <code>Containment</code>
+                </h4>
+                <Box /> <br />
+                <h4>
+                    <code>Specialization</code>
+                </h4>
+                <p>
+                    Sometimes we have a component that is a "special case" of another one, where the more specific one renders a generic one
+                    and sets it with props
+                </p>
+                <PirateGreet /> <br />
+                <p>
+                    Inheritance isn't recomended, since composition in React allows us to be very flexible.
+                    <br />
+                    <code>
+                        If you need to share some functionalities between components, it's better to create a JS module that'll be imported where is required
+                    </code>
+                </p>
+            </section>
 		</div>
 	);
 }
@@ -710,6 +735,94 @@ class TemperatureInput extends React.Component {
             </fieldset>
         );
     }
+}
+
+//* Composition vs Inheritance
+
+function BigBorder(props) {
+    return <div className={'big bold-' + props.color}>{props.children}</div>;
+    //* some elements don't know their child elements ahead of time (like generic boxes)
+    //* if we need to pass the children as an output, we have to use props.children
+}
+
+function InstaTopBar() {
+    return <div>title, reactions, direct</div>;
+}
+
+function InstaFeed() {
+    return <div>stories, posts</div>;
+}
+
+function InstaBottomBar() {
+    return <div>home, search, new content, market, profile</div>;
+}
+
+//? you could even come up with your own convention, if you need to split the child elements in different sections
+function InstaHome(props) {
+    return (
+        <div>
+        <div>{props.topbar}</div>
+        <div>{props.feed}</div>
+        <div>{props.bottombar}</div>
+        </div>
+    );
+}
+
+//* this way other components can add anything to them as their children
+function Box() {
+    return (
+        <div>
+            <BigBorder color="lime">
+                <h5>The box</h5>
+                <p>The children elements are here wororo</p>
+                <i>loco</i>
+            </BigBorder>
+            <InstaHome
+                topbar={<InstaTopBar />}
+                feed={<InstaFeed />}
+                bottombar={<InstaBottomBar />}
+            />
+        </div>
+    );
+    //* you can pass anything in props, even other components
+}
+
+function Greet(props) {
+    return (
+        <div>
+            <h5>{props.title}</h5>
+            <p>{props.message}</p>
+            {props.children}
+        </div>
+    );
+}
+
+//* showing title, message and the rest of the content under children
+//* the base structure above should be mirrored when we define the component
+function PirateGreet() {
+    return (
+        <Greet
+        title="Hi gang, I'm Monkey D. Luffy"
+        message="I'll be the king of pirates"
+        >
+            <ul>
+                <li>
+                    <b>Role</b>: <i>Captain</i>
+                </li>
+                <li>
+                    <b>Age</b>: <i>19</i>
+                </li>
+                <li>
+                    <b>Bounty</b>: <i>3'000'000'000$</i>
+                </li>
+                <li>
+                    <b>Fruit</b>: <i>Mythical Zoan Devil Fruit - Hito Hito No Mi Model: Nika</i>
+                </li>
+            </ul>
+        </Greet>
+    );
+
+//? Composition also works for components defined as classes
 }
 
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
