@@ -163,6 +163,25 @@ function App() {
                 <Reservation />
             </section>
             <hr/>
+            <section>
+                <h2>Lifting State Up</h2>
+                <p>
+                    Sometimes, multiple components need to show the same updated data: one solution could be to <code>lift the state up to the
+                    closest common ancestor</code>
+                </p>
+                <Calculator />
+                <p>
+                    Any data that changes must have only a single source of truth (can be changed in <code>only one place</code>).
+                    <br />
+                    The state is usually added in the component that needs it first; but <code> if another one needs it, then we
+                    should move ot to the closest shared ancestor, following the top-down data flow.
+                    </code>
+                    <br />
+                    This way makes bugs easier to find, since they'll surely be in the state of a component (you could track them with
+                    <code>React Developer Tools</code>)
+                </p>
+            </section>
+            <hr />
 		</div>
 	);
 }
@@ -411,7 +430,7 @@ const digits = [
     {value: 'digitale', key: 4}
 ];
 
-
+//* Forms
 class NameForm extends React.Component {
     constructor(props){
         super(props);
@@ -538,6 +557,159 @@ class Reservation extends React.Component {
     //* Using controlled components is cool, but you should write an event handler for every way your data can change
     //? in this cases, uncontrolled ones are an alternative to build forms
     //* there's also Formik, which is an open source library that handles validation, submissions and visited fields
+}
+
+//* Lifting state up
+
+function BoilingVerdict(props) {
+    if (props.celsius >= 100) {
+        return <p>The water would boil.</p>;
+    }
+    return <p>The water would not boil.</p>;
+}
+
+const scaleNames = {
+    c: 'Celsius',
+    f: 'Fahrenheit',
+    k: 'Kelvin',
+};
+
+    //? functions to convert between two temperature scales
+function celsiusToFahrenheit(c) {
+    return (c * 9) / 5 + 32;
+}
+
+function celsiusToKelvin(c) {
+    return c + 273.15;
+}
+
+function fahrenheitToCelsius(f) {
+    return ((f - 32) * 5) / 9;
+}
+
+function fahrenheitToKelvin(f) {
+    return (f - 32) / 1.8 + 273.15;
+}
+
+function kelvinToCelsius(k) {
+    return k - 273.15;
+}
+
+function kelvinToFahrenheit(k) {
+    return (k - 273.15) * 1.8 + 32;
+}
+
+//* function to convert the temperature
+function tryConvert(temperature, converter) {
+    const input = parseFloat(temperature);
+    if (Number.isNaN(input)) return '';
+
+    let output = converter(input);
+    output = Math.round(output * 1000) / 1000;
+    return output.toString();
+}
+
+class Calculator extends React.Component {
+    //* it's the source of truth, keeping the inputs in sync with each other
+    //* its state will be up to date with the last changed input
+    constructor(props) {
+        super(props);
+        this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+        this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+        this.handleKelvinChange = this.handleKelvinChange.bind(this);
+        this.state = { temperature: '', scale: 'k' };
+    }
+
+    handleCelsiusChange(degrees) {
+        this.setState({ temperature: degrees, scale: 'c' });
+    }
+
+    handleFahrenheitChange(degrees) {
+        this.setState({ temperature: degrees, scale: 'f' });
+    }
+
+    handleKelvinChange(degrees) {
+        this.setState({ temperature: degrees, scale: 'k' });
+    }
+
+    render() {
+        //? we need to update each input field when we alter one of them
+        //? and we also need to update the BoilingVerdict (currently it can't get the temperature, we need the inputs to kinda output it to the parent)
+        const scale = this.state.scale;
+        const temperature = this.state.temperature;
+
+        //? setting each input value based
+        const celsius =
+            scale === 'f'
+            ? tryConvert(temperature, fahrenheitToCelsius)
+            : scale === 'k'
+                ? tryConvert(temperature, kelvinToCelsius)
+                : temperature;
+
+        const fahrenheit =
+            scale === 'c'
+            ? tryConvert(temperature, celsiusToFahrenheit)
+            : scale === 'k'
+                ? tryConvert(temperature, kelvinToFahrenheit)
+                : temperature;
+
+        const kelvin =
+            scale === 'f'
+            ? tryConvert(temperature, fahrenheitToKelvin)
+            : scale === 'c'
+                ? tryConvert(temperature, celsiusToKelvin)
+                : temperature;
+
+        return (
+            <div>
+                <TemperatureInput
+                    scale="c"
+                    temperature={celsius}
+                    onTemperatureChange={this.handleCelsiusChange}
+                />
+                <TemperatureInput
+                    scale="f"
+                    temperature={fahrenheit}
+                    onTemperatureChange={this.handleFahrenheitChange}
+                />
+                <TemperatureInput
+                    scale="k"
+                    temperature={kelvin}
+                    onTemperatureChange={this.handleKelvinChange}
+                />
+                <BoilingVerdict celsius={parseFloat(celsius)} />
+            </div>
+        );
+    }
+}
+
+class TemperatureInput extends React.Component {
+    //* since it's a logic bound to an input field, we moved it here (from Calculator) as a separate component
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        //this.state = { temperature: '' }; //* this must be shared with the other inputs, lifting it up to the closest shared ancestor of the other component that needs it
+    }
+
+    handleChange(e) {
+        //? this.setState({ temperature: e.target.value }); before
+        this.props.onTemperatureChange(e.target.value);
+        //? after: we're making it a controlled component, accepting a method from the parent
+        //* onTemperatureChange is in the props of the input,and then is called when the input is edited
+    }
+
+    render() {
+        //? const temperature = this.state.temperature; before
+        //const temperature = this.props.temperature; //? after
+        //* since props are read-only, only the parent component can change it
+        //const scale = this.props.scale;
+        return (
+            <fieldset>
+                <legend>Enter temperature in {scaleNames[this.props.scale]}:</legend>
+                <input value={this.props.temperature} onChange={this.handleChange} />
+            </fieldset>
+        );
+    }
 }
 
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
