@@ -207,6 +207,107 @@ function App() {
                     </code>
                 </p>
             </section>
+            <hr />
+            <section>
+                <h2>Thinking in React</h2>
+                    <p>
+                        React makes you think about the app you're building, in order to build
+                        it in the right way
+                    </p>
+                <h4>These are the steps you should follow:</h4>
+                <ol>
+                    <li>
+                        <code>Start with a mock</code>: you could have something like a basic
+                        design from the designer, and the JSON response with the data you need
+                        to render;
+                    </li>
+                    <br />
+                    <li>
+                        <code>Define a component hierarchy</code>: try do define each
+                        component, ideally each one of them should do only one thing (the
+                        outer one renders all the otners inside, and the most internal render
+                        their data). So if it's too big, break it down
+                        <br />
+                        It'll be great if it adheres to the same informational architecture of
+                        the JSON response (<code>one component = one piece of data</code>. In
+                        a searchable table, you have: the big contaier - the serchbar for all
+                        inputs, the table - the heading for each category and the data row)
+                    </li>
+                    <br />
+                    <li>
+                        <code>Create a static version</code>: just drop it with zero
+                        interactivity/states, only to get the structure done.{' '}
+                        <code>
+                            Doing this requires a lot of typing and no thinking, while make it
+                            interactive is the opposite (a ton of thinking and almost no typing)
+                        </code>
+                        Since it'll be static, the components will only have the{' '}
+                        <code>render()</code> method initially; but the outer one will get all
+                        the data in its <code>props</code>
+                        <br />
+                        You can build it both top-down or bottom-up,
+                    </li>
+                    <br />
+                    <li>
+                        <code>
+                            Identify the mimimal and complete representation of the UI state
+                        </code>
+                        : find the minimal set of states that'll change. Something won't be a
+                        state if:
+                        <br />
+                        <ul>
+                            <li>is passed from a parent component with props;</li>
+                            <li>stays unchanged over time;</li>
+                            <li>is computable from any other props/state in the component.</li>
+                        </ul>
+                        In our case, the searchbar and the checkbox are states because they
+                        can change many times (they're input fields)
+                    </li>
+                    <br />
+                    <li>
+                        <code>Identify where your state should live</code>: look for the
+                        component that changes or owns this state. Look for:
+                        <br />
+                        <ul>
+                            <li>
+                            <code>components that render some data based on that state</code>{' '}
+                            (the table and the input box);
+                            </li>
+                            <li>
+                            <code>
+                                a common ancestor component of all the others that need that
+                                state
+                            </code>
+                            (the table container) ;
+                            </li>
+                            <li>
+                            <code>
+                                the common ancestor component or one of the parent ones of this
+                                should own the state
+                            </code>
+                            ;
+                            </li>
+                            <li>
+                            <code>
+                                if there's no common ancestor component, create one above it
+                                just to store the state
+                            </code>
+                            </li>
+                        </ul>
+                        Then we just add the initial state in the <code>constructor()</code>{' '}
+                        of the chosen component, and then we can pass its content as props to
+                        the children components
+                    </li>
+                    <br />
+                    <li>
+                        <code>Add inverse data flow</code>: now we have to implement the
+                        bottom-top flow of data. For example, since the state stores the input
+                        value, we should update the state up to the new typed value (with the{' '}
+                        <code>onChange()</code> event that'll call the <code>setState()</code>{' '}
+                        method)
+                    </li>
+                </ol>
+            </section>
 		</div>
 	);
 }
