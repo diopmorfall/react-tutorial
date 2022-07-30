@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 //* the root element that contains all the elements, then is rendered with its content inside with the following method
+//* I choose it as a base, then I make it the root of the whole app
 //? makes sense that its in the index file
 
 const app = <React.StrictMode>
@@ -37,11 +38,15 @@ function tick() {
 root.render( //* this renders elements, that are unchangeable once they're shown
     app
 );
+//? react kinda appends the content in the root
 //*usually, the root renders an element (<App />) that contains everything, and then handle changes with stateful components
 
 //* React DOM compares each element and its children to the previous one, and it updates the DOM to match the required state
 //?  (check the clock example, the DOM always changes)
 
+
+console.log("A JSX object", app); //* This shows that JSX is an object that describes the DOM element
+//* JSX creates objects with many details, that React turns into real DOM elements in the page
 //setInterval(tick, 1000);
 //* We can make it better, State and Lifecycle (with a component class)
 class Clock extends React.Component {
