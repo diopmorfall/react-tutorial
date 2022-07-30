@@ -2,6 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
+import Block from './Block';
+//* Here I'm importing this component, in order to use it (usually, they're in a "components" standalone folder)
+//* I can import whatever the hell I want
+
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
 }
@@ -307,6 +311,13 @@ function App() {
                         method)
                     </li>
                 </ol>
+            </section>
+            <section>
+                <h2>Importing components</h2>
+                <p>
+                    This below is an imported component
+                    <Block />
+                </p>
             </section>
 		</div>
 	);
