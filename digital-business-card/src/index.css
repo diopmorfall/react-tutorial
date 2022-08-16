@@ -93,7 +93,7 @@ code {
     justify-content: space-around;
 }
 
-.footer img{
-    height: 25px;
-    width: 25px;
+.footer a{
+    color: #dcdcdc;
+    text-decoration: none;
 }
