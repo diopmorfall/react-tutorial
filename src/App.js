@@ -319,6 +319,17 @@ function App() {
                     <Block />
                 </p>
             </section>
+            <section>
+                <h2>Other tutorials</h2>
+                <ul>
+                    <li>
+                        <a href='https://stackblitz.com/edit/react-elhnua'>Basics and importing a component</a>
+                    </li>
+                    <li>
+                        <a href='https://stackblitz.com/edit/react-eastva'>Project 1: infos about React</a>
+                    </li>
+                </ul>
+            </section>
 		</div>
 	);
 }
