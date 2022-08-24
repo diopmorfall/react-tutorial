@@ -312,6 +312,7 @@ function App() {
                     </li>
                 </ol>
             </section>
+            <hr />
             <section>
                 <h2>Importing components</h2>
                 <p>
@@ -319,6 +320,7 @@ function App() {
                     <Block />
                 </p>
             </section>
+            <hr />
             <section>
                 <h2>Other tutorials</h2>
                 <ul>
@@ -329,6 +331,14 @@ function App() {
                         <a href='https://stackblitz.com/edit/react-eastva'>Project 1: infos about React</a>
                     </li>
                 </ul>
+            </section>
+            <hr />
+            <section>
+                <h2>Mapping components</h2>
+                <p>
+                    We can map through arrays of elements, and then render them
+                </p>
+                <ElementMapping />
             </section>
 		</div>
 	);
@@ -451,6 +461,8 @@ class LoginControl extends React.Component {
                 }
             </div>
         )
+
+        //* custom properties of components that are not string must be specified within {}
 
         //* you can choose what you want to show; better if it's something kinda small
     }
@@ -948,4 +960,99 @@ function PirateGreet() {
 //? Composition also works for components defined as classes
 }
 
+function ElementMapping() {
+    const colors = [
+        "Red",
+        "Orange",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Indigo",
+        "Violet"
+    ];
+
+    //* I can get an array of any type, and then map it to get an Array of elements
+
+    const colorElements = colors.map(color => `<h3>${color}</h3>`);
+
+    const demonSlayers = [ //? kinda simulating the data we receive from an API
+        {
+            tag: "#KMD10760",
+            name: "Kamado Tanjiro",
+            rank: "Kinoe",
+            breathingStyle: "Water and Sun breathings"
+        },
+        {
+            tag: "#TKT8120",
+            name: "Tokitou Muichiro",
+            rank: "Hashira",
+            breathingStyle: "Mist breathing"
+        },
+        {
+            tag: "#TSY10756",
+            name: "Tsuyuri Kanao",
+            rank: "Tsuchinoto",
+            breathingStyle: "Flower breathing"
+        },
+        {
+            tag: "#UZT3421",
+            name: "Uzui Tengen",
+            rank: "Hashira (retired)",
+            breathingStyle: "Sound breathing"
+        },
+    ];
+
+    const demonSlayersElements = demonSlayers.map(slayer =>
+        /* X
+        <DemonSlayer
+            key={slayer.tag}
+            name={slayer.name}
+            rank={slayer.rank}
+            breathingStyle={slayer.breathingStyle}
+        /> */
+
+        //? To keep it as short as possible, I can pass the whole object into the props, like this:
+        //? Key is kept out because we need it to make the component unique
+
+        <DemonSlayer
+            key={slayer.tag}
+            slayer={slayer}
+        />
+
+        //? We can also do it this way, so that we don't need to use props.slayer .* later 
+        //? I'm spreading the props object, and make it work like the first method X 
+
+        /*
+        <DemonSlayer
+            key={slayer.tag}
+            {...slayer}
+        />
+        */
+
+    );
+
+    //* I can also map data in an array of custom components
+    //* Key is needed to make the components unique (otherwise we'll get a warning)
+    
+
+    return (
+        <div>
+            {colorElements}
+            {demonSlayersElements}
+        </div>
+    );
+
+}
+
+function DemonSlayer(props){
+    return(
+        <div>
+            <h6>Name: {props.slayer.name}</h6>
+            <p>Rank: {props.slayer.rank}</p>
+            <i>Breathing style: {props.slayer.breathingStyle}</i>
+        </div>
+    )
+
+    //! If I decide to pass into props the whole object, then I need to add the sub-object everywhere I'm using props.*
+}
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
