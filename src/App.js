@@ -719,6 +719,24 @@ class Reservation extends React.Component {
     //* there's also Formik, which is an open source library that handles validation, submissions and visited fields
 }
 
+//! Props are the properties that a component takes in, and are supposed to not be mutated here
+//! otherwise, we're disrupting it
+
+//* State instead represents values defined inside the component (kinda variables defined inside a function), that should handle changing values
+
+//* useState() returns an array: the first value is the default value of the state now, the other is a function used to set the state.
+//? I can get the value I need with array destructuring
+
+//* const [state, setState] = React.useState()
+
+//* If you need the old state value to get the new one, you should use a callback function that has the old state as a parameter
+
+/*
+    function increment(){
+        setState(prev => prev + 1)
+    }
+*/
+
 //* Lifting state up
 
 function BoilingVerdict(props) {
@@ -1055,4 +1073,7 @@ function DemonSlayer(props){
 
     //! If I decide to pass into props the whole object, then I need to add the sub-object everywhere I'm using props.*
 }
+
+
+
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
