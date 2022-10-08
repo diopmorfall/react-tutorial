@@ -6,6 +6,8 @@ import Block from './Block';
 //* Here I'm importing this component, in order to use it (usually, they're in a "components" standalone folder)
 //* I can import whatever the hell I want
 
+import Count from './Count';
+
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
 }
@@ -354,7 +356,10 @@ function App() {
                     <ObjectState />
                 </div>
             </section>
-            
+            <section>
+                <h2>Passing state to children components and dynamic styling</h2>
+                <ChildrenState/>
+            </section>
 		</div>
 	);
 }
@@ -1176,5 +1181,51 @@ function Star(props) {
 //! Data in React is passed in top-down direction only, not down-top or between siblings
 //? If the state is needed in another component, it should be moved up to the common ancestor component
 //! But we should keep state as close to the components that need it as possible
+
+function ChildrenState(){
+    const [count, setCount] = React.useState(0);
+
+    function add() {
+        setCount((prevCount) => prevCount + 1);
+    }
+
+    function subtract() {
+        setCount((prevCount) => prevCount - 1);
+    }
+
+    console.log('App component rendered');
+
+    //* Every time that state is updated, this component is rendered with the new state, along with its children components
+    //* If a child component relies upon the state of another one, it'll be rendered again with the new value
+
+    //* Derived state: when a component set its own state with an incoming property in props. And if this child component updates its own state, the parent one won't be but it should
+
+    //* Dynamic styles can be added via the style property, with an object inside the JS curly braces
+
+    //? They're quite handy because I can set the style basing on some other values
+
+    const styles = {
+        backgroundColor: props.darkMode ? 'lime' : 'lightblue',
+    };
+
+    //? A styles object where I define the style, instead of doing it in JSX
+
+    return (
+        <main>
+            <div className="counter" style={styles}>
+                <button className="counter--minus" onClick={subtract}>
+                –
+                </button>
+                <Count number={count} />
+                <button className="counter--plus" onClick={add}>
+                +
+                </button>
+            </div>
+            <a href="https://www.geeksforgeeks.org/differences-between-functional-components-and-class-components-in-react/">
+                Functional components vs class components
+            </a>
+        </main>
+    );
+}
 
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
