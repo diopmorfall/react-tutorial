@@ -7,6 +7,7 @@ import Block from './Block';
 //* I can import whatever the hell I want
 
 import Count from './Count';
+import FunctionForm from './FunctionForm';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -167,6 +168,8 @@ function App() {
                     function behave basing on it (event.target.name)
                 </p>
                 <Reservation />
+                <p>Here is the functional version of a form</p>
+                <FunctionForm />
             </section>
             <hr/>
             <section>
