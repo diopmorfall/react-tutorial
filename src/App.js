@@ -340,6 +340,21 @@ function App() {
                 </p>
                 <ElementMapping />
             </section>
+            <section>
+                <h2>Setting complex state</h2>
+                <p>
+                    States are not always single values, they could be arrays or object
+                </p>
+                <div>
+                    <h4>Array state</h4>
+                    <ArrayState />
+                </div>
+                <div>
+                    <h4>Object state</h4>
+                    <ObjectState />
+                </div>
+            </section>
+            
 		</div>
 	);
 }
@@ -1074,6 +1089,92 @@ function DemonSlayer(props){
     //! If I decide to pass into props the whole object, then I need to add the sub-object everywhere I'm using props.*
 }
 
+//* Setting complex states
 
+function ArrayState(){
+    const [itemsArray, setItemsArray] = React.useState(["Thing 1", "Thing 2"])
+    
+    function addItem() {
+        setItemsArray(prevItems => [...prevItems, `Thing ${prevItems.length + 1}`])
+    }
+
+    //! I can't use itemsArray.push(), because I can't change the old state directly
+    //* I must return a new state, that's why I return a new array based on the old value
+    
+    const itemsElements = itemsArray.map(item => <p key={item}>{item}</p>)
+    
+    return (
+        <div>
+            <button onClick={addItem}>Add Item</button>
+            {itemsElements}
+        </div>
+    )
+}
+
+function ObjectState() {
+    const [contact, setContact] = React.useState({
+        firstName: 'Hyoma',
+        lastName: 'Chigiri',
+        phone: '+1 (719) 555-1212',
+        email: 'chigirihyoma@blue-lock.com',
+        isFavorite: false,
+    });
+
+    function toggleFavorite() {
+        // Challenge: Rebuild it :)
+        setContact((prevContact) => ({
+        //? How to return an object without the return statement () => ({})
+            ...prevContact,
+            isFavorite: !prevContact.isFavorite,
+        }));
+        //* If I need to update a property in the state object, I should spread the previous state and then change said property
+        //! otherwise I'm returning a state with only one property
+    }
+
+    return (
+        <main>
+            <article className="card">
+                <img
+                    src="./images/user.png"
+                    className="card--image"
+                    alt="Profile Pic"
+                />
+                <div className="card--info">
+                    <Star isFilled={contact.isFavorite} handleClick={toggleFavorite} />
+                    <h2 className="card--name">
+                        {contact.firstName} {contact.lastName}
+                    </h2>
+                    <p className="card--contact">{contact.phone}</p>
+                    <p className="card--contact">{contact.email}</p>
+                </div>
+            </article>
+        </main>
+    );
+
+    //* I can't use onClick on a custom element, because it is a native property of HTML elements only
+    //* What I can do is to set a handleClick prop that calls the function that sets the star
+    //* and then in the Star component itself set the onClick event on an HTML element, thus calling props.handleClick
+    //* This way I can access a parent function and alter its state
+
+    //! To set an event listener, do not add parenthesis; otherwise the function will be called only as soon as the element is rendered
+    //? If we need to pass some parameters, we should use the syntax () => handleEvent(param)
+}
+
+function Star(props) {
+    let starIcon = props.isFilled ? 'star-filled.png' : 'star-empty.png';
+    return (
+        <img
+            src={`../images/${starIcon}`}
+            alt={props.isFilled ? 'Fav' : 'Not fav'}
+            className="card--favorite"
+            onClick={props.handleClick}
+        />
+        //? onClick on this component calls the function "stored" in props.handleClick, which is toggleFavorite in the App component, a state-setter function
+    );
+}
+
+//! Data in React is passed in top-down direction only, not down-top or between siblings
+//? If the state is needed in another component, it should be moved up to the common ancestor component
+//! But we should keep state as close to the components that need it as possible
 
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
