@@ -1241,4 +1241,13 @@ function ChildrenState(){
     );
 }
 
+//* Lazy state initialization
+
+const [notes, setNotes] = React.useState(
+    () => JSON.parse(localStorage.getItem('notes')) || []
+  );
+
+  //* If i run a function when I'm initializing state, I'm performing a lazy state initialization
+  //* I can use it to run that code only the first time the component loads, and not over and over especially if it's a heavy task
+
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
