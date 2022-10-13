@@ -363,6 +363,11 @@ function App() {
                 <h2>Passing state to children components and dynamic styling</h2>
                 <ChildrenState/>
             </section>
+            <section>
+                <h2>API calls and useEffect hook</h2>
+                <ApiCalls />
+                
+            </section>
 		</div>
 	);
 }
