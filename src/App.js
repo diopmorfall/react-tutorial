@@ -2,12 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
-import Block from './Block';
+import Block from './components/Block';
 //* Here I'm importing this component, in order to use it (usually, they're in a "components" standalone folder)
 //* I can import whatever the hell I want
 
-import Count from './Count';
-import FunctionForm from './FunctionForm';
+import Count from './components/Count';
+import FunctionForm from './components/FunctionForm';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
