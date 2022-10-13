@@ -8,6 +8,8 @@ import Block from './components/Block';
 
 import Count from './components/Count';
 import FunctionForm from './components/FunctionForm';
+import ApiCalls from './components/ApiCalls';
+import WindowTracker from './components/WindowTracker';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -366,7 +368,10 @@ function App() {
             <section>
                 <h2>API calls and useEffect hook</h2>
                 <ApiCalls />
-                
+                <p>
+                    But there are some issues that could rise with useEffect
+                </p>
+                <WindowTracker />
             </section>
 		</div>
 	);
