@@ -363,7 +363,7 @@ function App() {
             </section>
             <section>
                 <h2>Passing state to children components and dynamic styling</h2>
-                <ChildrenState/>
+                <ChildrenState darkMode={false}/>
             </section>
             <section>
                 <h2>API calls and useEffect hook</h2>
@@ -1195,7 +1195,7 @@ function Star(props) {
 //? If the state is needed in another component, it should be moved up to the common ancestor component
 //! But we should keep state as close to the components that need it as possible
 
-function ChildrenState(){
+function ChildrenState(props){
     const [count, setCount] = React.useState(0);
 
     function add() {
@@ -1217,9 +1217,11 @@ function ChildrenState(){
 
     //? They're quite handy because I can set the style basing on some other values
 
+    
     const styles = {
         backgroundColor: props.darkMode ? 'lime' : 'lightblue',
     };
+    
 
     //? A styles object where I define the style, instead of doing it in JSX
 
