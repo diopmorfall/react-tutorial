@@ -10,6 +10,7 @@ import Count from './components/Count';
 import FunctionForm from './components/FunctionForm';
 import ApiCalls from './components/ApiCalls';
 import WindowTracker from './components/WindowTracker';
+import UseReducer from './components/UseReducer';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -376,6 +377,10 @@ function App() {
             <section>
                 <h2>useRef</h2>
                 <UseRefComponent />
+            </section>
+            <section>
+                <h2>useReducer</h2>
+                <UseReducer />
             </section>
 		</div>
 	);
@@ -1291,4 +1296,6 @@ function UseRefComponent(){
         </div>
     );
 }
+
+
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported

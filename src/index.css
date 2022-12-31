@@ -15,3 +15,21 @@ code {
 .block{
     background-color: lime;
 }
+
+.modal {
+    width: 70%;
+    margin: 20px auto;
+    text-align: center;
+    background-color: lime;
+}
+
+.item {
+    width: 50%;
+    height: 30px;
+    margin: auto;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
