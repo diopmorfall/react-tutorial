@@ -373,6 +373,10 @@ function App() {
                 </p>
                 <WindowTracker />
             </section>
+            <section>
+                <h2>useRef</h2>
+                <UseRefComponent />
+            </section>
 		</div>
 	);
 }
@@ -1254,4 +1258,37 @@ const [notes, setNotes] = React.useState(
   //* If i run a function when I'm initializing state, I'm performing a lazy state initialization
   //* I can use it to run that code only the first time the component loads, and not over and over especially if it's a heavy task
 
+
+function UseRefComponent(){
+    const refContainer = useRef(null);
+    const divContainer = useRef(null);
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log(refContainer.current.value);
+        console.log(divContainer);
+        //* a ref container has an object with a property "current", which initially holds the value we pass into useRef()
+        //* then gets the value of the element referenced with the ref attribute
+    }
+
+    useEffect(() => {
+        refContainer.current.focus();
+    });
+    //? here I don't need a dependency array because it doesn't trigger a rerender
+
+    return (
+        <div ref={divContainer}>
+        <h1>useRef hook</h1>
+        <p>
+            It's a hook that, like useState() preserves values between multiple
+            render; but it doesn't trigger a rerender. It's mostly used to handle
+            DOM elements
+        </p>
+        <form onSubmit={handleSubmit}>
+            <input type="text" placeholder="useRef" ref={refContainer} />
+            <button type="submit">Submit</button>
+        </form>
+        </div>
+    );
+}
 export default App; //? a regular export after the definition of our component; it'll be available wherever it'll be imported
