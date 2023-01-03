@@ -13,6 +13,8 @@ import WindowTracker from './components/WindowTracker';
 import UseReducer from './components/UseReducer';
 import UseContextComponent from './components/UseContextComponent';
 import useFetch from './components/useFetch';
+import Player from './components/Player';
+import Players from './components/Players';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -395,6 +397,10 @@ function App() {
             <section>
                 <h2>Custom hooks and useFetch</h2>
                 <CustomHook />
+            </section>
+            <section>
+                <h2>PropTypes</h2>
+                <PropTypesComponent />
             </section>
 		</div>
 	);
@@ -1377,6 +1383,24 @@ function CustomHook() {
                 component
             </p>
             <h4>{loading ? 'Loading...' : 'Data here'}</h4>
+        </div>
+    );
+}
+
+function PropTypesComponent() {
+    const players = Players;
+    return (
+        <div>
+            <p>
+                It's used to validate the incoming props of a component: if some of those are missing,
+                we can handle them in the way we want to
+            </p>
+            <h3>Blue Lock NEL</h3>
+            <section>
+                {players.map((player) => (
+                    <Player key={player.jersey} {...player} />
+                ))}
+            </section>
         </div>
     );
 }
