@@ -382,6 +382,10 @@ function App() {
                 <h2>useReducer</h2>
                 <UseReducer />
             </section>
+            <section>
+                <h2>Prop Drilling</h2>
+                <PropDrilling />
+            </section>
 		</div>
 	);
 }
@@ -1293,6 +1297,59 @@ function UseRefComponent(){
             <input type="text" placeholder="useRef" ref={refContainer} />
             <button type="submit">Submit</button>
         </form>
+        </div>
+    );
+}
+
+function PropDrilling() {
+    const [people, setPeople] = useState([
+        { id: 1, name: 'Itoshi Rin' },
+        { id: 2, name: 'Shidou Ryusei' },
+        { id: 3, name: 'Isagi Yoichi' },
+        { id: 4, name: 'Bachira Meguru' },
+        { id: 5, name: 'Mikage Reo' },
+        { id: 6, name: 'Chigiri Hyoma' },
+        { id: 7, name: 'Kunigami Rensuke' },
+    ]);
+
+    const removeItem = (id) => {
+        setPeople((prevPeople) => prevPeople.filter((person) => person.id !== id));
+    };
+
+    const List = ({ people, removeItem }) => {
+        //* this component desn't need removeItem, but it's needed by its child component
+        //? and so far, this is the only way to pass it down
+        return (
+        <>
+            {people.map((person) => {
+            return <Person key={person.id} {...person} removeItem={removeItem} />;
+            //* this destructuring allows us to pass every prop down to the component
+            })}
+        </>
+        );
+    };
+
+    const Person = ({ id, name, removeItem }) => {
+        return (
+        <div className="item">
+            <h4>{name}</h4>
+            <button onClick={() => removeItem(id)}>Remove player</button>
+        </div>
+        );
+    };
+
+    return (
+        <div>
+        <h1>Prop drilling</h1>
+        <p>
+            It's not the official name, but it's the side effect of passing some
+            state from a top component down to the tree of components (imagine if
+            there are many of them, and some of them don't need the value that is
+            passed down).
+            <br />
+            It'll be fixed with contextAPI and useContext hook
+        </p>
+        <List people={people} removeItem={removeItem} />
         </div>
     );
 }
