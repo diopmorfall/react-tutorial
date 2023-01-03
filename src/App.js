@@ -11,6 +11,7 @@ import FunctionForm from './components/FunctionForm';
 import ApiCalls from './components/ApiCalls';
 import WindowTracker from './components/WindowTracker';
 import UseReducer from './components/UseReducer';
+import UseContextComponent from './components/UseContextComponent';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -385,6 +386,10 @@ function App() {
             <section>
                 <h2>Prop Drilling</h2>
                 <PropDrilling />
+            </section>
+            <section>
+                <h2>useContext / Context API</h2>
+                <UseContextComponent />
             </section>
 		</div>
 	);
@@ -1313,7 +1318,7 @@ function PropDrilling() {
     ]);
 
     const removeItem = (id) => {
-        setPeople((prevPeople) => prevPeople.filter((person) => person.id !== id));
+        setPeople(prevPeople => prevPeople.filter(person => person.id !== id));
     };
 
     const List = ({ people, removeItem }) => {
@@ -1321,7 +1326,7 @@ function PropDrilling() {
         //? and so far, this is the only way to pass it down
         return (
         <>
-            {people.map((person) => {
+            {people.map(person => {
             return <Person key={person.id} {...person} removeItem={removeItem} />;
             //* this destructuring allows us to pass every prop down to the component
             })}
@@ -1340,16 +1345,16 @@ function PropDrilling() {
 
     return (
         <div>
-        <h1>Prop drilling</h1>
-        <p>
-            It's not the official name, but it's the side effect of passing some
-            state from a top component down to the tree of components (imagine if
-            there are many of them, and some of them don't need the value that is
-            passed down).
-            <br />
-            It'll be fixed with contextAPI and useContext hook
-        </p>
-        <List people={people} removeItem={removeItem} />
+            <h1>Prop drilling</h1>
+            <p>
+                It's not the official name, but it's the side effect of passing some
+                state from a top component down to the tree of components (imagine if
+                there are many of them, and some of them don't need the value that is
+                passed down).
+                <br />
+                It'll be fixed with contextAPI and useContext hook
+            </p>
+            <List people={people} removeItem={removeItem} />
         </div>
     );
 }
