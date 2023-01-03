@@ -12,6 +12,7 @@ import ApiCalls from './components/ApiCalls';
 import WindowTracker from './components/WindowTracker';
 import UseReducer from './components/UseReducer';
 import UseContextComponent from './components/UseContextComponent';
+import useFetch from './components/useFetch';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -390,6 +391,10 @@ function App() {
             <section>
                 <h2>useContext / Context API</h2>
                 <UseContextComponent />
+            </section>
+            <section>
+                <h2>Custom hooks and useFetch</h2>
+                <CustomHook />
             </section>
 		</div>
 	);
@@ -1355,6 +1360,23 @@ function PropDrilling() {
                 It'll be fixed with contextAPI and useContext hook
             </p>
             <List people={people} removeItem={removeItem} />
+        </div>
+    );
+}
+
+const url = 'https://opentdb.com/api.php?amount=10&category=27&difficulty=hard&type=multiple';
+function CustomHook() {
+    const { loading, questions } = useFetch(url);
+    console.log(questions);
+    return (
+        <div>
+            <p>
+                We can create some custom hooks, or use already existing ones. For
+                example, if I have another component that wants to fetch data, I
+                shouldn't replicate what I did here but kinda shared it in a custom hook
+                component
+            </p>
+            <h4>{loading ? 'Loading...' : 'Data here'}</h4>
         </div>
     );
 }
