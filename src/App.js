@@ -15,6 +15,7 @@ import UseContextComponent from './components/UseContextComponent';
 import useFetch from './components/useFetch';
 import Player from './components/Player';
 import Players from './components/Players';
+import RouterComponent from './components/RouterComponents/RouterComponent';
 
 function intro(){
     return "I'm Gol D. Roger, the king of the pirates";
@@ -401,6 +402,10 @@ function App() {
             <section>
                 <h2>PropTypes</h2>
                 <PropTypesComponent />
+            </section>
+            <section>
+                <h2>React Router</h2>
+                <RouterComponent />
             </section>
 		</div>
 	);

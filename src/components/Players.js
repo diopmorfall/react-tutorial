@@ -34,6 +34,10 @@ export default [
     {
         jersey: 17,
         name: 'Papy Diop',
+        price: 30_000_000,
+        image: {
+            url: 'https://www.tuttivip.it/wp-content/uploads/2021/04/Pele-esultanza.-1.jpg',
+        }
     },
     {
         jersey: 44,

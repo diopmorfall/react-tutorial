@@ -33,3 +33,14 @@ code {
     justify-content: space-around;
     align-items: center;
 }
+
+.nav-router ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-router ul li {
+    list-style-type: none;
+}
