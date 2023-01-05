@@ -407,6 +407,10 @@ function App() {
                 <h2>React Router</h2>
                 <RouterComponent />
             </section>
+            <section>
+                <h2>Performance optimization</h2>
+                <PerformanceOptimization />
+            </section>
 		</div>
 	);
 }

@@ -44,3 +44,17 @@ code {
 .nav-router ul li {
     list-style-type: none;
 }
+
+.player{
+    width: 60%;
+    height: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.player img {
+width: 50%;
+}

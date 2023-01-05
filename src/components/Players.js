@@ -26,7 +26,7 @@ export default [
     {
         jersey: 8,
         name: 'Bachira Meguru',
-        price: 24_000_000,
+        price: 32_000_000,
         image: {
             url: 'https://i.pinimg.com/originals/b7/da/c9/b7dac99d7d92438f4b76e74206d2ef15.jpg',
         },
